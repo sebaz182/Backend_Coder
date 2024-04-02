@@ -70,11 +70,16 @@ class ProductManager {
     }
 
     getProductById(id) {
+        let status = false;
+        let result = `El Producto ${id} no fue encontrado!`;
+
         const product = this.#products.find(p => p.id === id)
-        if (product)
-            return product;
-        else
-            return `El Producto ${id} no fue encontrado!`;
+        if (product){
+            status = true;
+            result = product 
+        }
+
+        return {status,result}
     }
 
     updateProduct(id, objectUpdate){

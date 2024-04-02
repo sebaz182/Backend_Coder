@@ -3,7 +3,7 @@ import ProductManager from '../dao/ProductManager.js';
 
 const router = Router();
 
-router.get('/', (req,res)=>{
+router.get('/', async (req,res)=>{
     const {limit} = req.query;
 
     const p = new ProductManager();
@@ -11,7 +11,7 @@ router.get('/', (req,res)=>{
     res.json({Productos:p.getProducts(limit)})
 })
 
-router.get('/:productId', (req,res)=>{
+router.get('/:productId', async (req,res)=>{
     const {productId} = req.params;
 
     const p = new ProductManager();
@@ -20,7 +20,7 @@ router.get('/:productId', (req,res)=>{
     return res.json({Producto: product})
 })
 
-router.post('/', (req, res)=>{
+router.post('/', async (req, res)=>{
     const {title, description, price, thumbnails, code, stock, status, category} = req.body;
 
     const p = new ProductManager();
@@ -29,7 +29,7 @@ router.post('/', (req, res)=>{
     return res.json({result})
 })
 
-router.put('/:productId', (req, res)=>{
+router.put('/:productId', async (req, res)=>{
     const {productId} = req.params;
     
     const p = new ProductManager();
@@ -38,7 +38,7 @@ router.put('/:productId', (req, res)=>{
     return res.json({result})
 })
 
-router.delete('/:productId', (req, res)=>{
+router.delete('/:productId', async (req, res)=>{
     const {productId} = req.params;
 
     const p = new ProductManager();

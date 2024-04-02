@@ -80,17 +80,17 @@
         "category": "C"
     },
     {
-        "id": 7,
-        "title": "Producto 77",
-        "description": "Descripción del producto 77",
-        "price": 7777,
+        "id": 8,
+        "title": "Producto 7",
+        "description": "Descripción del producto 7",
+        "price": 99900,
         "thumbnails": [
             "img99.com",
             "img9999.com"
         ],
-        "code": "P107",
+        "code": "P007",
         "stock": 30,
-        "status": true,
+        "status": false,
         "category": "D"
     }
 ]
