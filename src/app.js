@@ -1,20 +1,58 @@
-import express from "express";
-import home from './routers/home.js'
-import products from './routers/products.js'
-import carts from './routers/carts.js'
+import express from 'express';
+import {Server} from 'socket.io';
+import {engine} from 'express-handlebars';
+
+import products from './routers/products.js';
+import carts from './routers/carts.js';
+import home from './routers/home.js';
+import realtimeproducts from './routers/realtimeproducts.js';
+
+import __dirname from './utils.js'
+
+import ProductManager from './dao/ProductManager.js';
+
+//IMPORTACION DE MIDDLEWARES
+import { middleware01, middleware02 } from "./middlewares/generals.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const PORT=3000
 
 const app=express()
 
+const p = new ProductManager();
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(errorHandler)//middleware a nivel de app
+app.use(express.static(__dirname + "/public"));
 
-app.use('', home);
+app.engine('handlebars', engine());
+app.set('views','./views');
+app.set('view engine', 'handlebars');
+
+app.use('/', home);
 app.use('/api/products', products);
+app.use('/api/realtimeproducts', realtimeproducts);
 app.use('/api/carts', carts);
 
-app.listen(PORT, ()=>console.log(`Server Online en puerto ${PORT}`))
+// app.use('/api/products',middleware02, products);//middelware a nivel endpoint
+
+
+const expressServer = app.listen(PORT, ()=>console.log(`Server Online en puerto ${PORT}`));
 //inicio el servidor con el comando 'nodemon app.js'
+const io = new Server(expressServer)
+
+io.on('connection', socket=> {
+
+        const products = p.getProducts();
+        socket.emit('products', products)
+
+        socket.on('addProduct', product=>{
+                p.addProduct({...product});
+        });
+
+});
+
+console.log(__dirname)
 
 

@@ -65,7 +65,7 @@
         ],
         "code": "P005",
         "stock": 5000,
-        "status": true,
+        "status": false,
         "category": "C"
     },
     {
@@ -80,7 +80,7 @@
         "category": "C"
     },
     {
-        "id": 8,
+        "id": 7,
         "title": "Producto 7",
         "description": "Descripción del producto 7",
         "price": 99900,

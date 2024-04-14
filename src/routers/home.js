@@ -4,7 +4,7 @@ const router = Router();
 
 router.get('/', (req,res)=>{
     
-    res.send("Bienvenidos al Proyecto Final |Powered by Seba Zeballos|")
+    return res.render('home')
 })
 
 export default router;

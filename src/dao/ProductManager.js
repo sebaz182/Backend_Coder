@@ -36,7 +36,7 @@ class ProductManager {
         return id;
     }
 
-    addProduct(title, description, price, thumbnails=[], code, stock, status=true, category) {
+    addProduct({title, description, price, thumbnails=[], code, stock, status=true, category}) {
         if (!title || !description || !price || !code || !stock || !category)
             return ('Debe ingresar todos los atributos del producto!!!');
 

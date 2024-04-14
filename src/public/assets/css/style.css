@@ -1,0 +1,86 @@
+/* --- RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+li {
+    list-style: none;
+}
+
+.a {
+    text-decoration: none;
+}
+
+
+/* Para posicionar el footer al final sin importar el contenido */
+html {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+footer {
+    margin-top: auto;
+}
+
+/* --- FOOTER --- */
+
+.footer {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    
+}
+
+.footer div div h2 {
+    font-size: 15px;
+    font-weight: 200;
+    text-align: center;
+    justify-content: center;
+}
+
+h1{
+    background-color: black;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    justify-content: center;
+}
+
+h2{
+    justify-content: center;
+    text-align: center;
+}
+
+/* --- HEADER --- */
+
+header nav {
+    background-color: black;
+}
+
+/* --- Table --- */
+.realTime{
+    margin: 10px;
+}
+.contenedor{
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+    justify-content: center;
+    text-align: center;
+}
+
+.button{
+    margin-top: 20px;
+}
+
