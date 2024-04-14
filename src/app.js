@@ -8,6 +8,7 @@ import home from './routers/home.js';
 import realtimeproducts from './routers/realtimeproducts.js';
 
 import __dirname from './utils.js'
+import path from 'path'
 
 import ProductManager from './dao/ProductManager.js';
 
@@ -24,11 +25,11 @@ const p = new ProductManager();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler)//middleware a nivel de app
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname,'/public')));
 
 app.engine('handlebars', engine());
-app.set('views','./views');
 app.set('view engine', 'handlebars');
+app.set('views', path.join(__dirname,'/views'));
 
 app.use('/', home);
 app.use('/api/products', products);
