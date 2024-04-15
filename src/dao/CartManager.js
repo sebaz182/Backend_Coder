@@ -1,7 +1,7 @@
 import fs from 'fs'
 import ProductManager from './ProductManager.js'
 
-const productManager = new ProductManager('../src/data/products.json');
+const productManager = new ProductManager('./src/data/products.json');
 
 
 class CartManager {

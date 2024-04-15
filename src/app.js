@@ -39,7 +39,7 @@ app.use('/api/carts', carts);
 
 const expressServer = app.listen(PORT, ()=>console.log(`Server Online en puerto ${PORT}`));
 //inicio el servidor con el comando 'nodemon app.js'
-const io = new Server(expressServer)
+export const io = new Server(expressServer)
 
 io.on('connection', socket=> {
 

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import ProductManager from '../dao/ProductManager.js';
+import { io } from '../app.js';
 export const router = Router()
 
 // import { auth } from '../middlewares/auth.js';
@@ -40,7 +41,7 @@ router.post('/', async (req, res)=>{
     }
     try{
         const result = productManager.addProduct({...req.body})
-
+        io.emit("product", result);
         return res.status(500).json({result});
     }
     catch (error){
