@@ -3,8 +3,8 @@ import {Server} from 'socket.io';
 import {engine} from 'express-handlebars';
 
 import {router as products} from './routers/productsRouter.js'
-import carts from './routers/cartsRouter.js';
-import views from './routers/viewsRouter.js';
+import {router as carts} from './routers/cartsRouter.js';
+import {router as views} from './routers/viewsRouter.js';
 
 import __dirname from './utils.js'
 import path from 'path'
