@@ -19,7 +19,7 @@ const PORT=3000
 
 const app=express()
 
-const productManager = new ProductManager('../src/data/products.json');
+const productManager = new ProductManager('./src/data/products.json');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

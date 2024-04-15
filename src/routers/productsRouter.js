@@ -4,7 +4,7 @@ export const router = Router()
 
 // import { auth } from '../middlewares/auth.js';
 
-const productManager = new ProductManager('../src/data/products.json')
+const productManager = new ProductManager('./src/data/products.json')
 
 router.get('/', async (req,res)=>{
     
