@@ -1,13 +1,15 @@
 import fs from 'fs'
 import ProductManager from './ProductManager.js'
 
+const productManager = new ProductManager('../src/data/products.json');
+
 
 class CartManager {
     #carts;
     #path;
 
-    constructor() {
-        this.#path = '../src/data/carts.json';
+    constructor(fileRoute) {
+        this.#path = fileRoute;
         
         this.#carts = this.#readCartsInFile();
     }
@@ -65,8 +67,8 @@ class CartManager {
 
         if (indexCart !== -1){
             const indexProductInCart = this.#carts[indexCart].products.findIndex(p => p.id === productId);
-            const p = new ProductManager();
-            const product = p.getProductById(productId); 
+            
+            const product = productManager.getProductById(productId); 
 
             if (product.status && indexProductInCart === -1){
                 this.#carts[indexCart].products.push ({id: productId, 'quantity': 1});

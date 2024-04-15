@@ -16,8 +16,7 @@ socket.on('products', products => {
                         <td>${product.code}</td>
                         <td>${product.stock}</td>
                         <td>${product.category}</td>
-                        <td>${product.status ? '&#10004' : '&#10006;'}</td>
-                        <td>${product.thumbnails.length > 0 ? product.thumbnails[0] : 'No hay imagen'}</td>
+                        <td>${product.status}</td>
                     </tr>
         `;
     });

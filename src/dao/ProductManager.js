@@ -4,8 +4,9 @@ class ProductManager {
     #products;
     #path;
 
-    constructor() {
-        this.#path = '../src/data/products.json';
+    constructor(fileRout) {
+        
+        this.#path = fileRout;
         
         this.#products = this.#readProductsInFile();
     }
@@ -36,30 +37,23 @@ class ProductManager {
         return id;
     }
 
-    addProduct({title, description, price, thumbnails=[], code, stock, status=true, category}) {
-        if (!title || !description || !price || !code || !stock || !category)
-            return ('Debe ingresar todos los atributos del producto!!!');
-
-        if (this.#products.some(p => p.code == code))
-            return `El codigo ${code} ya existe`;
-
+    addProduct(product) {
+        
+        if (this.#products.some(p => p.code == product.code))
+            return `El codigo ${product.code} ya existe`;
+        else{
             const id = this.#asigIdProduct();
         
-            const product = {
-                id: id,
-                title: title,
-                description: description,
-                price: price,
-                thumbnails: thumbnails,
-                code: code,
-                stock: stock,
-                status: status,
-                category: category
+            product = {
+                id,
+                ...product
             };
 
+            console.log({product})
             this.#products.push(product);
             this.#saveFile();
-            return `Producto ${product.code} agregado exitosamente`;        
+            return `Producto ${product.code} agregado exitosamente`;
+        }       
     }
 
     getProducts(limit=0) {

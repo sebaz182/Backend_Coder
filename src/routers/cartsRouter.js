@@ -3,17 +3,18 @@ import CartManager from '../dao/CartManager.js';
 
 const router = Router();
 
+const cartManager = new CartManager('../src/data/carts.json')
+
 router.post('/', async (req,res)=>{
-    const c = new CartManager();
-    const result = c.createCart();
+
+    const result = cartManager.createCart();
     return res.json({result});
 })
 
 router.get('/:cartId', async (req,res)=>{
     const {cartId} = req.params;
     
-    const c = new CartManager();
-    const cart = c.getCartById(Number(cartId));
+    const cart = cartManager.getCartById(Number(cartId));
     
     return res.json({Carrito: cart})
 })
@@ -21,8 +22,7 @@ router.get('/:cartId', async (req,res)=>{
 router.post('/:cartId/product/:productId', async (req,res)=>{
     const {cartId, productId} = req.params;
 
-    const c = new CartManager();
-    const cart = c.addProductToCart(Number(cartId), Number(productId));
+    const cart = cartManager.addProductToCart(Number(cartId), Number(productId));
 
     return res.json({cart})
 })

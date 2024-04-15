@@ -2,10 +2,9 @@ import express from 'express';
 import {Server} from 'socket.io';
 import {engine} from 'express-handlebars';
 
-import products from './routers/products.js';
-import carts from './routers/carts.js';
-import home from './routers/home.js';
-import realtimeproducts from './routers/realtimeproducts.js';
+import {router as products} from './routers/productsRouter.js'
+import carts from './routers/cartsRouter.js';
+import views from './routers/viewsRouter.js';
 
 import __dirname from './utils.js'
 import path from 'path'
@@ -20,7 +19,7 @@ const PORT=3000
 
 const app=express()
 
-const p = new ProductManager();
+const productManager = new ProductManager('../src/data/products.json');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,9 +30,8 @@ app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname,'/views'));
 
-app.use('/', home);
+app.use('/', views);
 app.use('/api/products', products);
-app.use('/api/realtimeproducts', realtimeproducts);
 app.use('/api/carts', carts);
 
 // app.use('/api/products',middleware02, products);//middelware a nivel endpoint
@@ -45,11 +43,11 @@ const io = new Server(expressServer)
 
 io.on('connection', socket=> {
 
-        const products = p.getProducts();
+        const products = productManager.getProducts();
         socket.emit('products', products)
 
         socket.on('addProduct', product=>{
-                p.addProduct({...product});
+                productManager.addProduct({...product});
         });
 
 });
