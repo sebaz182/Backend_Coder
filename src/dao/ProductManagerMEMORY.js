@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-class ProductManager {
+export class ProductManagerMEMORY {
     #products;
     #path;
 
@@ -109,4 +109,4 @@ class ProductManager {
     }
 }
 
-export default ProductManager
+export default ProductManagerMEMORY

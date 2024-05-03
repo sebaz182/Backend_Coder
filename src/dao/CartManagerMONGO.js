@@ -1,10 +1,10 @@
 import fs from 'fs'
-import ProductManager from './ProductManager.js'
+import {ProductManagerMONGO as ProductManager} from './ProductManagerMONGO.js'
 
-const productManager = new ProductManager('./src/data/products.json');
+const productManager = new ProductManager();
 
 
-class CartManager {
+export class CartManagerMONGO {
     #carts;
     #path;
 
@@ -88,4 +88,4 @@ class CartManager {
     }
 }
 
-export default CartManager
+export default CartManagerMONGO

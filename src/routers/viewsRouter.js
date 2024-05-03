@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../dao/ProductManager.js";
+import {ProductManagerMONGO as ProductManager} from "../dao/ProductManagerMONGO.js";
 export const router = Router();
 
 const productManager = new ProductManager('./src/data/products.json')
@@ -15,7 +15,7 @@ router.get('/products', async (req,res)=>{
 
     let products
     try {
-        products = productManager.getProducts(limit);
+        products = await productManager.getProducts(limit);
     } catch (error) {
         console.log(error)
         res.setHeader('Content-Type','application/json');
@@ -25,10 +25,8 @@ router.get('/products', async (req,res)=>{
             }
         )
     }
-
     res.setHeader('Content-Type','text/html');
     res.status(200).render('products',{products});
-
 })
 
 router.get('/realtimeproducts', async (req,res)=>{
@@ -36,7 +34,7 @@ router.get('/realtimeproducts', async (req,res)=>{
     let products
 
     try {
-        products = productManager.getProducts();
+        products = await productManager.getProducts();
     } catch (error) {
         console.log(error)
         res.setHeader('Content-Type','application/json');
@@ -46,7 +44,6 @@ router.get('/realtimeproducts', async (req,res)=>{
             }
         )
     }
-        
     res.setHeader('Content-Type','text/html');
     res.status(200).render('realTimeProducts',{products});
 })

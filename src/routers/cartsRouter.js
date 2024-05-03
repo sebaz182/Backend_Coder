@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import CartManager from '../dao/CartManager.js';
+import {CartManagerMONGO as CartManager} from '../dao/CartManagerMONGO.js';
 export const router = Router();
 
-const cartManager = new CartManager('./src/data/carts.json')
+const cartManager = new CartManager()
 
 router.post('/', async (req,res)=>{
 

@@ -1,15 +1,15 @@
 const socket = io();
 
-socket.on('products', products => {
+socket.on('products',async products => {
     const tbody = document.getElementById('products-body');
     tbody.innerHTML = '';
 
-    products.forEach(product => {
+    await products.forEach(product => {
         const row = tbody.insertRow();
 
         row.innerHTML = `
                     <tr>
-                        <th scope="row">${product.id}</th>
+                        <th scope="row">${product._id}</th>
                         <td>${product.title}</td>
                         <td>${product.description}</td>
                         <td>${product.price}</td>
