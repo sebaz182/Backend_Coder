@@ -44,9 +44,16 @@ router.get('/:productId', async (req, res) => {
 
     if (validId) {
         try {
-            let product = await productManager.getProductBy({ _id: productId });
-            res.setHeader('Content-Type', 'application/json');
-            return res.status(200).json({ Producto: product });
+            let product = await productManager.getProductById(productId);
+
+            if (product) {
+                res.setHeader('Content-Type', 'application/json');
+                return res.status(200).json({ Producto: product });
+            } else {
+                res.setHeader('Content-Type', 'application/json');
+                return res.status(404).json({ msj: `Producto no encontrado` });
+            }
+
         } catch (error) {
             console.log(error);
             res.setHeader('Content-Type', 'application/json');
@@ -121,7 +128,7 @@ router.put('/:productId', async (req, res) => {
 
         let existCode
         let code = aModProduct.code
-
+        
         try {
             existCode = await productManager.getProductBy({ code })
         }
@@ -134,14 +141,31 @@ router.put('/:productId', async (req, res) => {
                 })
         }
 
-        if (existCode) {
+        let product 
+        try {
+            product = await productManager.getProductById(productId)
+        }
+        catch (error) {
             res.setHeader('Content-Type', 'application/json');
-            return res.status(400).json({ error: `Ya existe el Producto con Codigo ${code}!!!` })
-        } else {
+            return res.status(500).json(
+                {
+                    error: `Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                    detalle: `${error.result}`
+                })
+        }
+
+        if (!existCode || product.code === aModProduct.code) {
             try {
                 let productModif = await productManager.updateProduct(productId, aModProduct)
-                res.setHeader('Content-Type', 'application/json');
-                return res.status(200).json({ productModif });
+                
+                if (product) {
+                    res.setHeader('Content-Type', 'application/json');
+                    return res.status(200).json({ ProductoModificado : productModif });
+                } else {
+                    res.setHeader('Content-Type', 'application/json');
+                    return res.status(404).json({ msj: `Producto no encontrado` });
+                }
+                
             } catch (error) {
                 console.log(error);
                 res.setHeader('Content-Type', 'application/json');
@@ -152,6 +176,9 @@ router.put('/:productId', async (req, res) => {
                     }
                 )
             }
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(400).json({ error: `Ya existe el Producto con Codigo ${code}!!!` })
         }
     } else {
         res.setHeader('Content-Type', 'application/json');
@@ -167,7 +194,6 @@ router.delete('/:productId', async (req, res) => {
     if (validId) {
         try {
             let product = await productManager.deleteProduct({ _id: productId });
-            console.log({ product });
             if (product) {
                 res.setHeader('Content-Type', 'application/json');
                 return res.status(200).json({ msj: `Producto eliminado`, product });

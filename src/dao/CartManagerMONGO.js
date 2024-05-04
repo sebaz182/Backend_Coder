@@ -1,91 +1,24 @@
-import fs from 'fs'
-import {ProductManagerMONGO as ProductManager} from './ProductManagerMONGO.js'
+import {cartModel} from './models/cartsModel.js'
 
-const productManager = new ProductManager();
+export class CartManagerMONGO{
 
-
-export class CartManagerMONGO {
-    #carts;
-    #path;
-
-    constructor(fileRoute) {
-        this.#path = fileRoute;
-        
-        this.#carts = this.#readCartsInFile();
+    //crear Carrito
+    async createCart(cart){
+        return await cartModel.create(cart)
     }
 
-    #readCartsInFile(){
-        try {
-            if(fs.existsSync(this.#path))
-                return JSON.parse(fs.readFileSync(this.#path, 'utf-8'));
-
-            return [];
-        } catch (error) {
-            console.log(`Ocurrio un error al leer el archivo de carritos ${error}`);
-        }
+    async getCartById(id){
+        return await cartModel.findById(id).lean();
     }
 
-    #saveFile(){
-        try {
-            fs.writeFileSync(this.#path, JSON.stringify(this.#carts))
-        } catch (error) {
-            console.log(`Ocurrio un error al grabar el archivo de carritos ${error}`);
-        }
+    async getCarts(){
+        return await cartModel.find().lean();
     }
 
-    #asigIdCarrito(){
-        let id = 1;
-            if (this.#carts.length != 0)
-                id = this.#carts[this.#carts.length - 1].id + 1;
-        return id;
+    async addProductToCart(cartId, cart){
+        return await cartModel.findByIdAndUpdate(cartId, cart, {runValidators:true, returnDocument:"after"} );
     }
 
-    createCart(){
-
-        const newCart ={
-            id: this.#asigIdCarrito(),
-            products: []
-        };
-
-        this.#carts.push(newCart);
-        this.#saveFile();
-        return `El carrito ${newCart.id} fue Creado correctamente.`
-    }
-
-    getCartById(id){
-        const cart = this.#carts.find(c => c.id === id)
-        if (cart)
-            return cart
-        else
-            return `El Carrito con id ${id} no existe!`
-    }
-
-    addProductToCart(cartId, productId){
-        let result = `El carrito con id ${cartId} no existe`;
-
-        const indexCart = this.#carts.findIndex(c => c.id === cartId);
-
-        if (indexCart !== -1){
-            const indexProductInCart = this.#carts[indexCart].products.findIndex(p => p.id === productId);
-            
-            const product = productManager.getProductById(productId); 
-
-            if (product.status && indexProductInCart === -1){
-                this.#carts[indexCart].products.push ({id: productId, 'quantity': 1});
-                this.#saveFile();
-                result = `Producto ${productId} agregado al Carrito id ${cartId}`
-            }else if (product.status && indexProductInCart !== -1){
-                ++this.#carts[indexCart].products[indexProductInCart].quantity;
-                this.#saveFile();
-                result = `Se sumo un Producto id ${productId} al Carrito id ${cartId}`
-            }else if (!product.status){
-                result = `El Producto con id ${productId} no existe`;
-            }
-            
-        }
-
-        return result
-    }
 }
 
 export default CartManagerMONGO

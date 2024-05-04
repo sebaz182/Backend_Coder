@@ -1,10 +1,13 @@
-import fs from 'fs'
 import {productModel} from './models/productsModel.js'
 
 export class ProductManagerMONGO {
     
     async getProducts(filter={}) {
         return await productModel.find(filter).lean();
+    }
+
+    async getProductById(id){
+        return await productModel.findById(id).lean();
     }
 
     async getProductBy(filter={}) {

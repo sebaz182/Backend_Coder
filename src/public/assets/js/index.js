@@ -1,11 +1,13 @@
 const socket = io();
 
-socket.on('products',async products => {
+socket.on('products', async products => {
     const tbody = document.getElementById('products-body');
     tbody.innerHTML = '';
 
-    await products.forEach(product => {
+    await products.forEach(async product => {
+
         const row = tbody.insertRow();
+
 
         row.innerHTML = `
                     <tr>
@@ -24,7 +26,7 @@ socket.on('products',async products => {
 
 const addProductForm = document.getElementById('addProductForm');
 
-addProductForm.addEventListener('submit',function (event){
+addProductForm.addEventListener('submit', function (event) {
     event.preventDefault();
 
     const title = document.getElementById('title').value;
@@ -34,7 +36,7 @@ addProductForm.addEventListener('submit',function (event){
     const stock = document.getElementById('stock').value;
     const status = document.getElementById('status').value;
     const category = document.getElementById('category').value;
-    
+
 
     const product = {
         title: title,

@@ -45,7 +45,7 @@ router.get('/realtimeproducts', async (req,res)=>{
         )
     }
     res.setHeader('Content-Type','text/html');
-    res.status(200).render('realTimeProducts',{products});
+    res.status(200).render('realTimeProducts', {products} );
 })
 
 
