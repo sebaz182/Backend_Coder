@@ -71,8 +71,31 @@
                             <th scope="col">Estado</th>
                         </tr>
                     </thead>
-                    <tbody id="products-body">
-                    </tbody>
+
+                    <tbody>
+                    {{#each products}}
+                    <tr>
+                        <th scope="row"><a class="a"
+                                href="/api/products/{{this._id}}">{{this._id}}</a></th>
+                        <td>{{this.title}}</td>
+                        <td>{{this.description}}</td>
+                        <td>$ {{this.price}}</td>
+                        <td>{{this.code}}</td>
+                        <td>{{this.stock}}</td>
+                        <td>{{this.category}}</td>
+                        <td>{{#if this.status}}
+                            &#10004;
+                            {{else}}
+                            &#10006;
+                            {{/if}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+
+                    {{!-- <tbody id="products-body">
+                    </tbody> --}}
+                
                 </table>
             </div>
         </div>

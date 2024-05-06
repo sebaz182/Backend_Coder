@@ -1,29 +1,5 @@
 const socket = io();
 
-socket.on('products', async products => {
-    const tbody = document.getElementById('products-body');
-    tbody.innerHTML = '';
-
-    await products.forEach(async product => {
-
-        const row = tbody.insertRow();
-
-
-        row.innerHTML = `
-                    <tr>
-                        <th scope="row">${product._id}</th>
-                        <td>${product.title}</td>
-                        <td>${product.description}</td>
-                        <td>${product.price}</td>
-                        <td>${product.code}</td>
-                        <td>${product.stock}</td>
-                        <td>${product.category}</td>
-                        <td>${product.status}</td>
-                    </tr>
-        `;
-    });
-})
-
 const addProductForm = document.getElementById('addProductForm');
 
 addProductForm.addEventListener('submit', function (event) {
@@ -51,3 +27,7 @@ addProductForm.addEventListener('submit', function (event) {
     socket.emit('addProduct', product)
     addProductForm.reset()
 });
+
+socket.on("updateProduct", () => {  
+    window.location.reload();    
+})

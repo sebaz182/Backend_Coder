@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const messageCollection = 'message';
 const messageSchema = new mongoose.Schema(
     {
+        socketId: {type:String, require: true},
         user:{type:String, require: true},
         message:{type:String, require: true}
     },
@@ -11,6 +12,6 @@ const messageSchema = new mongoose.Schema(
     }
 )
 
-export const cartModel=mongoose.model(
+export const messageModel=mongoose.model(
     messageCollection,
     messageSchema)
