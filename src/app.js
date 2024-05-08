@@ -63,31 +63,29 @@ io.on('connection', async (socket) => {
 
         ///conexion del chat
         console.log(`Se ha conectado un cliente con id ${socket.id}`)
+        
+        let usuarios =[]
 
-        let usuarios = []
-        let mensajes
-
-        try {
-                mensajes = await chatManager.getMessages()
-        }
-        catch (error) {
-                console.log(error);
-        }
-
-        socket.on("id", async nombre => {
-                usuarios.push({ id: socket.id, nombre })
-                console.log({mensajes});
-                await socket.emit("mensajesPrevios", mensajes)
-                socket.broadcast.emit("nuevoUsuario", nombre)
+        let messages = await chatManager.getMessages();
+        messages = messages.map(m=> {
+                return {user: m.user, message: m.message}
         })
 
-        socket.on("mensaje", async (nombre, mensaje) => {
-                let newMensaje = ({ socketId: socket.id, user: nombre, message: mensaje });
-                console.log(newMensaje);
+        console.log(messages);
+
+        socket.on("id", async (user, messages) => {
+                console.log('no entra aca');
+                usuarios.push({ socketId: socket.id, user })
+                socket.emit("mensajesPrevios", messages)
+                socket.broadcast.emit("nuevoUsuario", user)
+        })
+
+        socket.on("mensaje", async (user, message) => {
+                let newMessage = ({ socketId: socket.id, user: user, message: message });
                 try {
-                        await chatManager.addMessage(newMensaje);
-                        mensajes.push({ nombre, mensaje })
-                        io.emit("nuevoMensaje", nombre, mensaje)
+                        await chatManager.addMessage(newMessage);
+                        // mensajes.push({ user, message })
+                        io.emit("nuevoMensaje", user, message)
 
                 }
                 catch (error) {
@@ -96,9 +94,9 @@ io.on('connection', async (socket) => {
         })
 
         socket.on("disconnect", () => {
-                let usuario = usuarios.find(u => u.id === socket.id)
+                let usuario = usuarios.find(u => u.socketId === socket.id)
                 if (usuario) {
-                        io.emit("saleUsuario", usuario.nombre)
+                        io.emit("saleUsuario", usuario.user)
                 }
         })
 });

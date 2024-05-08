@@ -58,8 +58,7 @@ router.get('/chat', async (req,res)=>{
     let messages
 
     try {
-        //messages = await chatManager.getMessages();
-        messages = [];
+        messages = await chatManager.getMessages();
     } catch (error) {
         console.log(error)
         res.setHeader('Content-Type','application/json');
@@ -70,7 +69,7 @@ router.get('/chat', async (req,res)=>{
         )
     }
     res.setHeader('Content-Type','text/html');
-    res.status(200).render('chat');
+    res.status(200).render('chat', {messages});
 })
 
 

@@ -10,8 +10,8 @@ Swal.fire({
     allowOutsideClick:false
 }).then(datos=>{
     // console.log(datos)
-    let nombre=datos.value
-    document.title=nombre
+    let user=datos.value
+    document.title=user
 
     let inputMensaje=document.getElementById("mensaje")
     let divMensajes=document.getElementById("mensajes")
@@ -19,25 +19,25 @@ Swal.fire({
     
     const socket=io()
     
-    socket.emit("id", nombre)
+    socket.emit("id", user)
 
-    socket.on("nuevoUsuario", nombre=>{
+    socket.on("nuevoUsuario", user=>{
         Swal.fire({
-            text:`${nombre} se ha conectado...!!!`,
+            text:`${user} se ha conectado...!!!`,
             toast:true,
             position:"top-right"
         })
     })
 
-    socket.on("mensajesPrevios", mensajes=>{
-        mensajes.forEach(m=>{
-            divMensajes.innerHTML+=`<span class="mensaje"><strong>${m.nombre}</strong> dice <i>${m.mensaje}</i></span><br>`
+    socket.on("mensajesPrevios", async messages=>{
+        await messages.forEach(m=>{
+            divMensajes.innerHTML+=`<span class="mensaje"><strong>${m.user}</strong> dice <i>${m.message}</i></span><br>`
             divMensajes.scrollTop=divMensajes.scrollHeight
         })
     })
 
-    socket.on("saleUsuario", nombre=>{
-        divMensajes.innerHTML+=`<span class="mensaje"><strong>${nombre}</strong> ha salido del chat... :(</span><br>`
+    socket.on("saleUsuario", user=>{
+        divMensajes.innerHTML+=`<span class="mensaje"><strong>${user}</strong> ha salido del chat... :(</span><br>`
         divMensajes.scrollTop=divMensajes.scrollHeight
     })
 
@@ -46,14 +46,14 @@ Swal.fire({
 
         // console.log(e, e.target.value)
         if(e.code==="Enter" && e.target.value.trim().length>0){
-            socket.emit("mensaje", nombre, e.target.value.trim())
+            socket.emit("mensaje", user, e.target.value.trim())
             e.target.value=""
             e.target.focus()
         }
     })
 
-    socket.on("nuevoMensaje", (nombre, mensaje)=>{
-        divMensajes.innerHTML+=`<span class="mensaje"><strong>${nombre}</strong> dice <i>${mensaje}</i></span><br>`
+    socket.on("nuevoMensaje", (user, message)=>{
+        divMensajes.innerHTML+=`<span class="mensaje"><strong>${user}</strong> dice <i>${message}</i></span><br>`
         divMensajes.scrollTop=divMensajes.scrollHeight
     })
 

@@ -12,7 +12,7 @@ export class CartManagerMONGO{
     }
 
     async getCarts(){
-        return await cartModel.find().lean();
+        return await cartModel.find();
     }
 
     async addProductToCart(cartId, cart){
