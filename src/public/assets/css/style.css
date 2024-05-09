@@ -15,6 +15,7 @@ li {
 
 .a {
     text-decoration: none;
+    color: black;
 }
 
 
@@ -102,4 +103,25 @@ header nav {
     background-color: wheat;
     display: inline-block;
     margin-top: 5px;
+}
+
+.pagination{
+    justify-content: center;
+    text-align: center;
+}
+
+.pagination p{
+    padding-top: 12px;
+    justify-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+}
+
+.pagination a{
+    color: black;
+    font-size: 25px;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
 }

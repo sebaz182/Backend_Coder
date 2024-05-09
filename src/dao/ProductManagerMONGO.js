@@ -2,28 +2,109 @@ import {productModel} from './models/productsModel.js'
 
 export class ProductManagerMONGO {
     
+    //traer todos los productos
     async getProducts(filter={}) {
-        return await productModel.find(filter).lean();
+        try {
+            return await productModel.find(filter).lean();
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        }   
     }
 
+    //traer productos paginados
+    async getProductsPagin(page=1){
+        try {
+            return await productModel.paginate({},{limit: 8, page, lean:true})
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        } 
+    }
+
+    //traer producto por id
     async getProductById(id){
-        return await productModel.findById(id).lean();
+        try {
+            return await productModel.findById(id).lean();
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        } 
     }
 
+    //traer un producto por filtro
     async getProductBy(filter={}) {
-        return await productModel.findOne(filter).lean();
+        try {
+            return await productModel.findOne(filter).lean();
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        } 
     }
 
+    //añadir un producto
     async addProduct(product) {
-        return await productModel.create(product);
+        try {
+            return await productModel.create(product);
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        } 
     }
     
+    //eliminar un producto
     async deleteProduct(filter={}){
-        return await productModel.findByIdAndDelete(filter);
+        try {
+            return await productModel.findByIdAndDelete(filter);
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        } 
     }
 
+    //actualizar un producto
     async updateProduct(id, product){
-        return await productModel.findByIdAndUpdate(id, product, {runValidators:true, returnDocument:"after"} );
+        try {
+            return await productModel.findByIdAndUpdate(id, product, {runValidators:true, returnDocument:"after"} );
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        } 
     }
 }
 
