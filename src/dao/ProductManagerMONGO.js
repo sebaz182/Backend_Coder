@@ -3,9 +3,9 @@ import {productModel} from './models/productsModel.js'
 export class ProductManagerMONGO {
     
     //traer todos los productos
-    async getProducts(filter={}) {
+    async getProducts() {
         try {
-            return await productModel.find(filter).lean();
+            return await productModel.find().lean();
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -18,9 +18,9 @@ export class ProductManagerMONGO {
     }
 
     //traer productos paginados
-    async getProductsPagin(page=1){
+    async getProductsPagin(page, limit){
         try {
-            return await productModel.paginate({},{limit: 8, page, lean:true})
+            return await productModel.paginate({},{limit, page, lean:true})
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');

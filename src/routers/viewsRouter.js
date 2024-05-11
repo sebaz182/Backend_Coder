@@ -15,14 +15,25 @@ router.get('/', (req, res) => {
 //ROUTE PAGE LISTADO DE PRODUCTOS
 router.get('/products', async (req, res) => {
     
-    let page = 1
+    let {page, limit, sort, query} = req.query;
+    
+    if (!page || page <= 0)
+        page = 1
+    
+    if (!limit)
+        limit =10
+    
+    let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(page, limit);
 
-    let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(page);
-
-    console.log(totalPages, hasPrevPage, hasNextPage, prevPage, nextPage);
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage, page} );
+    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage, page, limit} );
 })
+
+//ROUTE PAGE DEL CARRITO 
+
+
+
+
 
 //ROUTE PAGE LISTADO DE PRODUCTOS EN TIEMPO REAL
 router.get('/realtimeproducts', async (req, res) => {
