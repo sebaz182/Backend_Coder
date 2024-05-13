@@ -1,0 +1,53 @@
+<div>
+    <h2>Listado de Carritos</h2>
+    <div class="contenedor">
+        <div class="table">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each carts}}
+                    <tr>
+                        <th scope="row"><a class="a"
+                                href="/carts/{{this._id}}">{{this._id}}</a></th>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!-- Controles de paginación -->
+    <div>
+        <div class="pagination" id="pagination">
+            <!-- Primera Pagina -->
+            {{#if hasPrevPage}}
+                <a href="{{hasPrevLink}}">
+                    <i class="bi bi-chevron-double-left"></i>
+                </a>
+            {{/if}}
+            <!-- Icono para retroceder página -->
+            {{#if hasPrevPage}}
+                <a href="{{prevLink}}">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            {{/if}}
+            <!-- Numeracion de pagina -->
+            <p>Pag. {{page}} de {{totalPages}}</p>
+            <!-- Icono para avanzar página -->
+            {{#if hasNextPage}}
+                <a href="{{nextLink}}">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            {{/if}}
+            <!-- Ultima Pagina -->
+            {{#if hasNextPage}}
+            <a href="{{hasNextLink}}">
+                <i class="bi bi-chevron-double-right"></i>
+            </a>
+            {{/if}}
+        </div>
+    </div>
+</div>

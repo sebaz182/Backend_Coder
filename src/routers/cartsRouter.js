@@ -8,37 +8,14 @@ const cartManager = new CartManager()
 const productManager = new ProductManager()
 
 router.post('/', async (req, res) => {
-
-
-    try {
-        let newCart = await cartManager.createCart({})
-        return res.status(500).json({ newCart });
-    }
-    catch (error) {
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(500).json(
-            {
-                error: `Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
-                detalle: `${error.result}`
-            })
-    }
+    let newCart = await cartManager.createCart({})
+    return res.status(500).json({ newCart });
 })
 
 router.get('/', async (req, res) => {
-    try {
         let carts = await cartManager.getCarts();
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json({ carts });
-    } catch (error) {
-        console.log(error);
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(500).json(
-            {
-                error: `Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
-                detalle: `${error.result}`
-            }
-        )
-    }
 })
 
 router.get('/:cartId', async (req, res) => {
@@ -52,7 +29,7 @@ router.get('/:cartId', async (req, res) => {
 
             if (cart) {
                 res.setHeader('Content-Type', 'application/json');
-                return res.status(200).json({ Cart: cart });
+                return res.status(200).json({ cart: cart });
             } else {
                 res.setHeader('Content-Type', 'application/json');
                 return res.status(404).json({ msj: `Cart no encontrado` });

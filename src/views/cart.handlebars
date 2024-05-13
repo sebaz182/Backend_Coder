@@ -1,0 +1,17 @@
+<div>
+    <h2>Carritooo</h2>
+    <div class="contenedor">
+        
+        <ul id="cart">
+            {{#each cart.products}}
+            <li>
+                {{product_id.title}} , {{product_id.category}} $<strong>
+                    ${{product_id.price}} </strong> | Llevas {{quantity}}
+            </li>
+            <hr>
+            {{/each}}
+        </ul>
+        <br><br>
+
+    </div>
+</div>

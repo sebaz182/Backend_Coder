@@ -1,3 +1,4 @@
+import { query } from 'express';
 import {productModel} from './models/productsModel.js'
 
 export class ProductManagerMONGO {
@@ -18,9 +19,9 @@ export class ProductManagerMONGO {
     }
 
     //traer productos paginados
-    async getProductsPagin(page, limit){
+    async getProductsPagin(query, options){
         try {
-            return await productModel.paginate({},{limit, page, lean:true})
+            return await productModel.paginate(query, options)
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -47,20 +48,6 @@ export class ProductManagerMONGO {
         } 
     }
 
-    //traer un producto por filtro
-    async getProductBy(filter={}) {
-        try {
-            return await productModel.findOne(filter).lean();
-        } catch (error) {
-            console.log(error)
-            res.setHeader('Content-Type','application/json');
-            return res.status(500).json(
-                {
-                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
-                }
-            )
-        } 
-    }
 
     //añadir un producto
     async addProduct(product) {

@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { ProductManagerMONGO as ProductManager } from "../dao/ProductManagerMONGO.js";
 import { ChatManager as ChatManager } from "../dao/ChatManager.js";
+import {CartManagerMONGO as CartManager} from "../dao/CartManagerMONGO.js";
 export const router = Router();
 
 const productManager = new ProductManager();
+const cartManager = new CartManager();
+
 const chatManager = new ChatManager();
 
 //ROUTE HOME
@@ -16,22 +19,130 @@ router.get('/', (req, res) => {
 router.get('/products', async (req, res) => {
     
     let {page, limit, sort, query} = req.query;
-    
-    if (!page || page <= 0)
+
+    if(query){
+        query = JSON.parse(decodeURIComponent(query))
+    }
+    else{
+        query = {}
+    }
+
+    page = parseInt(page);
+    limit = parseInt(limit)
+
+    if (!page || page <= 0 || isNaN(page))
         page = 1
     
-    if (!limit)
+    if (!limit || limit <= 0|| isNaN(limit))
         limit =10
+
+    let sortURL = sort
+
+    if (sort === 'asc' || sort === 'desc'){
+        sort = {price: sort === 'asc' ? 1 : -1}
+    }else{
+        sort = null;
+        sortURL = null
+    }
     
-    let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(page, limit);
+    let options = {
+        lean: true,
+        page: page,
+        limit: limit,
+        sort: sort,
+    }
+
+    let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(query, options);
+
+    //armado de links para paginacion
+    let prevLink, nextLink, hasPrevLink, hasNextLink
+
+    if (totalPages < page){
+        return res.status(400).json({ error: "Lo sentimos, Pagina no encontrada" })
+    } 
+
+    query = JSON.stringify(query)
+    
+    if(prevPage){
+        prevLink = `/products?limit=${limit}&page=${prevPage}&sort=${sortURL}&query=${query}`
+    }
+
+    if (nextPage){
+        nextLink = `/products?limit=${limit}&page=${nextPage}&sort=${sortURL}&query=${query}`
+    }
+
+    if(hasPrevPage){
+        hasPrevLink = `/products?limit=${limit}&page=1&sort=${sortURL}&query=${query}`
+    }
+    if(hasNextPage){
+        hasNextLink = `/products?limit=${limit}&page=${totalPages}&sort=${sortURL}&query=${query}`
+    }
 
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage, page, limit} );
+    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink} );
 })
 
-//ROUTE PAGE DEL CARRITO 
+//ROUTE PAGE LISTADO DE CARRITOS COMPLETOS
+router.get('/carts', async (req, res) => {
+    let {page, limit} = req.query;
+
+    page = parseInt(page);
+    limit = parseInt(limit)
+
+    if (!page || page <= 0 || isNaN(page))
+        page = 1
+    
+    if (!limit || limit <= 0|| isNaN(limit))
+        limit =10
+
+    let options = {
+        lean: true,
+        page: page,
+        limit: limit,
+    }
+
+    let { docs: carts, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await cartManager.getCartsPagin(options);
+
+    console.log({carts});
+
+    //armado de links para paginacion
+    let prevLink, nextLink, hasPrevLink, hasNextLink
+
+    if (totalPages < page){
+        return res.status(400).json({ error: "Lo sentimos, Pagina no encontrada" })
+    } 
+
+    if(prevPage){
+        prevLink = `/products?limit=${limit}&page=${prevPage}`
+    }
+
+    if (nextPage){
+        nextLink = `/products?limit=${limit}&page=${nextPage}`
+    }
+
+    if(hasPrevPage){
+        hasPrevLink = `/products?limit=${limit}&page=1`
+    }
+    if(hasNextPage){
+        hasNextLink = `/products?limit=${limit}&page=${totalPages}`
+    }
 
 
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).render('carts', { carts, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink} );
+})
+
+
+//ROUTE DE UN CARRITO EN PARTICULAR
+router.get('/carts/:cartId', async (req, res) => {
+
+    let cartId = req.params.cartId
+
+    let cart = await cartManager.getCartById(cartId)
+
+    res.setHeader('Content-Type', 'text/html');
+    res.status(200).render('cart', {cart})
+})
 
 
 
@@ -55,6 +166,7 @@ router.get('/realtimeproducts', async (req, res) => {
     res.status(200).render('realTimeProducts', { products });
 })
 
+//ROUTE PAGE CHAT
 router.get('/chat', async (req, res) => {
 
     let messages

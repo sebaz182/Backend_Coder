@@ -56,13 +56,13 @@
         <div class="pagination" id="pagination">
             <!-- Primera Pagina -->
             {{#if hasPrevPage}}
-                <a href="/products?limit={{limit}}&page=1">
+                <a href="{{hasPrevLink}}">
                     <i class="bi bi-chevron-double-left"></i>
                 </a>
             {{/if}}
             <!-- Icono para retroceder página -->
             {{#if hasPrevPage}}
-                <a href="/products?limit={{limit}}&page={{prevPage}}">
+                <a href="{{prevLink}}">
                     <i class="bi bi-chevron-left"></i>
                 </a>
             {{/if}}
@@ -70,13 +70,13 @@
             <p>Pag. {{page}} de {{totalPages}}</p>
             <!-- Icono para avanzar página -->
             {{#if hasNextPage}}
-                <a href="/products?limit={{limit}}&page={{nextPage}}">
+                <a href="{{nextLink}}">
                     <i class="bi bi-chevron-right"></i>
                 </a>
             {{/if}}
             <!-- Ultima Pagina -->
             {{#if hasNextPage}}
-            <a href="/products?limit={{limit}}&page={{totalPages}}">
+            <a href="{{hasNextLink}}">
                 <i class="bi bi-chevron-double-right"></i>
             </a>
             {{/if}}
