@@ -20,7 +20,7 @@ export class CartManagerMONGO{
     //recupero Cart por Id del carrito
     async getCartById(id){
         try {
-            return await cartModel.findById(id).populate("products.product_id").lean();
+            return await cartModel.findById(id).populate('products.product').lean();
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -62,8 +62,18 @@ export class CartManagerMONGO{
         }
     }
 
+    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
+
+
+    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+
+    //CON EL UPDATE PUEDO HACER TODAS LAS ACCIONES - LA LOGICA LA HAGO DESDE EL ROUTER
     //Agregar producto existente al carrito existente 
-    async addProductToCart(cartId, cart){
+    //Descontar del carrito el producto seleccionado
+    //Eliminar todos los productos del carrito
+    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
+    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+    async updateCart(cartId, cart){
         try {
             return await cartModel.findByIdAndUpdate(cartId, cart, {runValidators:true, returnDocument:"after"} );
         } catch (error) {
@@ -76,17 +86,6 @@ export class CartManagerMONGO{
             )
         }
     }
-
-    //Eliminar del carrito el producto seleccionado
-
-
-    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
-
-
-    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
-
-
-    //Eliminar todos los productos del carrito
 
 }
 

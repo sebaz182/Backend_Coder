@@ -7,7 +7,7 @@ const cartsSchema = new mongoose.Schema(
         products: {
             type: [
                 {
-                    product_id: {
+                    product: {
                         type: mongoose.Types.ObjectId,
                         ref: 'products'
                     },
@@ -27,7 +27,7 @@ const cartsSchema = new mongoose.Schema(
 
 cartsSchema.pre("find", function(){
     this.populate({
-        path: "products.product_id",
+        path: "products.product",
     })
     .lean()
 })

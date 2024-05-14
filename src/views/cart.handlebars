@@ -5,8 +5,8 @@
         <ul id="cart">
             {{#each cart.products}}
             <li>
-                {{product_id.title}} , {{product_id.category}} $<strong>
-                    ${{product_id.price}} </strong> | Llevas {{quantity}}
+                {{product.title}} , {{product.category}} $<strong>
+                    ${{product.price}} </strong> | Llevas {{quantity}}
             </li>
             <hr>
             {{/each}}
