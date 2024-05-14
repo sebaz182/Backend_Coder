@@ -61,16 +61,13 @@ export class CartManagerMONGO{
             )
         }
     }
-
-    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
-
-
-    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
-
+    
     //CON EL UPDATE PUEDO HACER TODAS LAS ACCIONES - LA LOGICA LA HAGO DESDE EL ROUTER
     //Agregar producto existente al carrito existente 
     //Descontar del carrito el producto seleccionado
     //Eliminar todos los productos del carrito
+    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
+    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
     //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
     //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
     async updateCart(cartId, cart){

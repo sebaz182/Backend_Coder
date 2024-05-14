@@ -103,8 +103,6 @@ router.get('/carts', async (req, res) => {
 
     let { docs: carts, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await cartManager.getCartsPagin(options);
 
-    console.log({carts});
-
     //armado de links para paginacion
     let prevLink, nextLink, hasPrevLink, hasNextLink
 
@@ -127,7 +125,6 @@ router.get('/carts', async (req, res) => {
         hasNextLink = `/products?limit=${limit}&page=${totalPages}`
     }
 
-
     res.setHeader('Content-Type', 'text/html');
     res.status(200).render('carts', { carts, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink} );
 })
@@ -140,9 +137,17 @@ router.get('/carts/:cartId', async (req, res) => {
 
     let cart = await cartManager.getCartById(cartId)
 
+    let totalCart = 0
+
+    cart.products.forEach(function(product) {
+        totalCart += product.product.price * product.quantity;
+    });
+
+
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('cart', {cart})
+    res.status(200).render('cart', {cart, totalCart})
 })
+
 
 
 

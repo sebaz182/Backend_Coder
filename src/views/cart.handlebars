@@ -1,17 +1,53 @@
 <div>
-    <h2>Carritooo</h2>
+    <h2>Carrito <i class="bi bi-cart"></i></h2>
     <div class="contenedor">
-        
-        <ul id="cart">
-            {{#each cart.products}}
-            <li>
-                {{product.title}} , {{product.category}} $<strong>
-                    ${{product.price}} </strong> | Llevas {{quantity}}
-            </li>
-            <hr>
-            {{/each}}
-        </ul>
-        <br><br>
-
+        <hr>
+        <h3>Id del carrito: 
+            <input type="text" name="" id="cartId"  value="{{cart._id}}" size="30px" disabled>
+        </h3>
+        <hr>
+        <br>
+        <h3>Listado de Productos en el Carrito</h3>
+        <div class="table">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Codigo</th>
+                        <th scope="col">Titulo</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each cart.products}}
+                    <tr>
+                        <td>{{product.code}}</td>
+                        <td>{{product.title}}</td>
+                        <td>{{product.category}}</td>
+                        <td>$ {{product.price}}</td>
+                        <td><input type="number" id="quantity_{{product._id}}"
+                                value="{{quantity}}"
+                                max="{{product.stock}}"
+                                min="1"> de {{product.stock}}
+                        </td>
+                        <td>
+                            <a type="button" onclick="saveChange ('{{product._id}}')"><i class="bi bi-bag-check"></i></a>
+                            <a type="button" onclick="deletProduct ('{{product._id}}')"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <div>
+                <h3>Total del Carrito: $ {{totalCart}}</h3>
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger" onclick="deleteAllProducts()">Vaciar Carrito</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<script src="/assets/js/cart.js"></script>

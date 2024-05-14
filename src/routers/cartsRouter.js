@@ -231,9 +231,107 @@ router.delete('/:cartId', async (req, res) => {
 })
 
 //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
+router.put('/:cartId', async (req, res)=>{
+    let {cartId} = req.params
+    let productsBody = req.body
 
+    let validCardId = mongoose.Types.ObjectId.isValid(cartId);
+
+    //verifico que el id del carrito sea valido
+    if (validCardId) {
+        let cart = await cartManager.getCartById(cartId);
+        if (!cart) {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(404).json({ msj: `Cart no encontrado` });
+        } else{
+            cart.products.push(productsBody);
+
+            let cartUpdate = await cartManager.updateCart(cartId, cart)
+
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(200).json({ 
+                msj: 'Carrito Actualizado! ',
+                Carrito : cartUpdate 
+            });
+        }
+    } else {
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(404).json({ msj: `ID Carrito no valido` });
+    }
+})
 
 //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+router.put('/:cartId/product/:productId', async (req, res) => {
+    let { cartId, productId } = req.params;
+    let quantityBody = req.body;
+
+    console.log({quantityBody});
+    let cart
+    let product
+    let quantityNumber = parseInt(quantityBody.quantity)
+
+    console.log(cartId,productId,quantityNumber);
+
+    let validCardId = mongoose.Types.ObjectId.isValid(cartId);
+    let validProddId = mongoose.Types.ObjectId.isValid(productId);
+
+    //verifico que el id del carrito sea valido
+    if (validCardId) {
+        try {
+            cart = await cartManager.getCartById(cartId);
+            if (!cart) {
+                res.setHeader('Content-Type', 'application/json');
+                return res.status(404).json({ msj: `Cart no encontrado` });
+            }
+        } catch (error) {
+            console.log(error);
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(500).json(
+                {
+                    error: `Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                    detalle: `${error.result}`
+                }
+            )
+        }
+
+        //verifico que el id de producto sea valisdo
+        if (validProddId) {
+            
+                product = await productManager.getProductById(productId);
+
+                if (!product) {
+                    res.setHeader('Content-Type', 'application/json');
+                    return res.status(404).json({ msj: `Producto no encontrado` });
+                }
+
+                //comienzo a editar el registro
+                let indexProductInCart = cart.products.findIndex(p => p.product._id.toString() == productId)
+
+                if(quantityNumber >= 0){
+                    if (indexProductInCart === -1) {
+                        cart.products.push({ product: productId, quantity: quantityNumber });
+                    } else if (quantityNumber > 0){
+                        cart.products[indexProductInCart].quantity = quantityNumber;
+                    } else{
+                        cart.products.splice(indexProductInCart,1);
+                    }
+                    let cartUpdate = await cartManager.updateCart(cartId, cart)
+                    res.setHeader('Content-Type', 'application/json');
+                    return res.status(200).json({ Carrito : cartUpdate });
+                } else{
+                    res.setHeader('Content-Type', 'application/json');
+                    return res.status(404).json({ msj: `La cantidad no puede ser menor a 0` });
+                }
+        } else {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(404).json({ msj: `ID Producto no valido!` });
+        }
+
+    } else {
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(404).json({ msj: `ID Carrito no valido` });
+    }
+})
 
 
 export default router;
