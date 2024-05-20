@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { CartManagerMONGO as CartManager } from '../dao/CartManagerMONGO.js';
 import mongoose from 'mongoose';
 import { ProductManagerMONGO as ProductManager } from '../dao/ProductManagerMONGO.js';
+
 export const router = Router();
 
 const cartManager = new CartManager()
@@ -216,7 +217,6 @@ router.delete('/:cartId', async (req, res) => {
 
         cart.products = [];
 
-
         await cartManager.updateCart(cartId, cart)
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json({ 
@@ -265,12 +265,9 @@ router.put('/:cartId/product/:productId', async (req, res) => {
     let { cartId, productId } = req.params;
     let quantityBody = req.body;
 
-    console.log({quantityBody});
     let cart
     let product
     let quantityNumber = parseInt(quantityBody.quantity)
-
-    console.log(cartId,productId,quantityNumber);
 
     let validCardId = mongoose.Types.ObjectId.isValid(cartId);
     let validProddId = mongoose.Types.ObjectId.isValid(productId);

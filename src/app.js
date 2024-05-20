@@ -1,6 +1,7 @@
 import express from 'express';
 import { Server } from 'socket.io';
 import { engine } from 'express-handlebars';
+import cookieParser from 'cookie-parser';
 
 import { router as products } from './routers/productsRouter.js'
 import { router as carts } from './routers/cartsRouter.js';
@@ -31,6 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(errorHandler)//middleware a nivel de app
 app.use(express.static(path.join(__dirname, '/public')));
+app.use(cookieParser())
 
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');

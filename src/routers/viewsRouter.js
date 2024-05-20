@@ -52,6 +52,9 @@ router.get('/products', async (req, res) => {
         sort: sort,
     }
 
+    //hardcodeo un id de carrito para trabajar como sesion 
+    let cartId = "6642ac698fd098eab5b02816"  
+
     let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(query, options);
 
     //armado de links para paginacion
@@ -79,7 +82,7 @@ router.get('/products', async (req, res) => {
     }
 
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink} );
+    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink, cartId} );
 })
 
 //ROUTE PAGE LISTADO DE CARRITOS COMPLETOS

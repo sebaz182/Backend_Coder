@@ -1,6 +1,49 @@
 <div>
     <h2>Listado de Productos</h2>
     <div class="contenedor">
+        <h3>Id del carrito Hardcodeado:
+            <input type="text" name id="cartId" value="{{cartId}}" size="25px"
+                disabled>
+        </h3>
+
+        <div class="row justify-content-between">
+            <div class="d-flex col-md-12 justify-content-between">
+                <div class="col-md-3 filtro">
+                    <select class="form-select"
+                        aria-label="Default select example" id="rubroSelect">
+                        <option selected>Selecciones un Rubro</option>
+                        {{#each products}}
+                        {{#each products.category}}
+                        <option value={{category}}>{{category}}</option>
+                        {{/each}}
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="col-md-3 filtro">
+                    <select class="form-select"
+                        aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-md-3 filtro">
+                    <select class="form-select"
+                        aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-md-3 filtro">
+                    <button class="btn btn-primary"
+                        onclick="submitForm()">Enviar</button>
+                </div>
+            </div>
+        </div>
+
         <div class="table">
             <table class="table table-bordered">
                 <thead class="thead-dark">
@@ -43,7 +86,7 @@
                             {{/if}}
                         </td>
                         <td>
-                            <i class="bi bi-cart-plus"></i>
+                            <a type="button" onclick="addProduct ('{{this._id}}')"><i class="bi bi-cart-plus"></i></a>  
                         </td>
                     </tr>
                     {{/each}}
@@ -56,23 +99,23 @@
         <div class="pagination" id="pagination">
             <!-- Primera Pagina -->
             {{#if hasPrevPage}}
-                <a href="{{hasPrevLink}}">
-                    <i class="bi bi-chevron-double-left"></i>
-                </a>
+            <a href="{{hasPrevLink}}">
+                <i class="bi bi-chevron-double-left"></i>
+            </a>
             {{/if}}
             <!-- Icono para retroceder página -->
             {{#if hasPrevPage}}
-                <a href="{{prevLink}}">
-                    <i class="bi bi-chevron-left"></i>
-                </a>
+            <a href="{{prevLink}}">
+                <i class="bi bi-chevron-left"></i>
+            </a>
             {{/if}}
             <!-- Numeracion de pagina -->
             <p>Pag. {{page}} de {{totalPages}}</p>
             <!-- Icono para avanzar página -->
             {{#if hasNextPage}}
-                <a href="{{nextLink}}">
-                    <i class="bi bi-chevron-right"></i>
-                </a>
+            <a href="{{nextLink}}">
+                <i class="bi bi-chevron-right"></i>
+            </a>
             {{/if}}
             <!-- Ultima Pagina -->
             {{#if hasNextPage}}
@@ -83,3 +126,5 @@
         </div>
     </div>
 </div>
+
+<script src="/assets/js/products.js"></script>

@@ -125,3 +125,12 @@ header nav {
     padding: 10px;
     text-decoration: none;
 }
+
+.table{
+    padding-top: 15px;
+}
+.filtro{
+    padding: 15px;
+    justify-content: center;
+    text-align: center;
+}
