@@ -134,3 +134,7 @@ header nav {
     justify-content: center;
     text-align: center;
 }
+
+.dropdown-menu {
+    text-align: left !important;
+}

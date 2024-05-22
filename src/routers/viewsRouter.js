@@ -2,6 +2,8 @@ import { Router } from "express";
 import { ProductManagerMONGO as ProductManager } from "../dao/ProductManagerMONGO.js";
 import { ChatManager as ChatManager } from "../dao/ChatManager.js";
 import {CartManagerMONGO as CartManager} from "../dao/CartManagerMONGO.js";
+import { auth } from '../middlewares/auth.js';
+
 export const router = Router();
 
 const productManager = new ProductManager();
@@ -12,7 +14,7 @@ const chatManager = new ChatManager();
 //ROUTE HOME
 router.get('/', (req, res) => {
 
-    return res.render('home')
+    return res.render('home', {login: req.session.user})
 })
 
 //ROUTE PAGE LISTADO DE PRODUCTOS
@@ -151,6 +153,38 @@ router.get('/carts/:cartId', async (req, res) => {
     res.status(200).render('cart', {cart, totalCart})
 })
 
+//VISTAS DE LAS SESIONES DE USUARIO
+router.get('/registre',(req, res, next)=>{
+    if(req.session.user){
+        return res.redirect("/profile")
+    }
+
+    next()
+},(req,res)=>{
+    let {error}=req.query
+
+    res.status(200).render('registre', {error, login: req.session.user})
+})
+
+router.get('/login',(req, res, next)=>{
+    if(req.session.user){
+        return res.redirect("/profile")
+    }
+
+    next()
+}, (req,res)=>{
+
+    let {error, mensaje}=req.query
+
+    res.status(200).render('login', {error, mensaje, login: req.session.user})
+})
+
+router.get('/profile', auth, (req,res)=>{
+
+    res.status(200).render('profile',{
+        user:req.session.user, login: req.session.user
+    })
+})
 
 
 

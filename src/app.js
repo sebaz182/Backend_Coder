@@ -2,10 +2,12 @@ import express from 'express';
 import { Server } from 'socket.io';
 import { engine } from 'express-handlebars';
 import cookieParser from 'cookie-parser';
+import sessions from "express-session"
 
-import { router as products } from './routers/productsRouter.js'
-import { router as carts } from './routers/cartsRouter.js';
-import { router as views } from './routers/viewsRouter.js';
+import { router as productsRouter } from './routers/productsRouter.js'
+import { router as cartsRouter } from './routers/cartsRouter.js';
+import { router as viewsRouter } from './routers/viewsRouter.js';
+import { router as sessionsRouter } from './routers/sessionsRouter.js'
 
 import __dirname from './utils.js'
 import path from 'path'
@@ -37,10 +39,16 @@ app.use(cookieParser())
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, '/views'));
+app.use(sessions({
+        secret: "CoderCoder123", resave:true, 
+        saveUninitialized: true, 
+        // store:
+        }))
 
-app.use('/', views);
-app.use('/api/products', products);
-app.use('/api/carts', carts);
+app.use('/', viewsRouter);
+app.use('/api/products', productsRouter);
+app.use('/api/carts', cartsRouter);
+app.use('/api/sessions', sessionsRouter)
 
 // app.use('/api/products',middleware02, products);//middelware a nivel endpoint
 

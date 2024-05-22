@@ -1,14 +1,7 @@
 export const auth=(req, res, next)=>{
-
-    let {user, password}=req.query
-    if(!user || !password){
+    if(!req.session.user){
         res.setHeader('Content-Type','application/json');
-        return res.status(400).json({error:`Complete Usuario y Contraseña`});
-    }
-
-    if(user!=="admin" || password!=="coder"){
-        res.setHeader('Content-Type','application/json');
-        return res.status(401).json({error:`Credenciales invalidas`});
+        return res.status(401).json({error:`No existen usuarios autenticados`})
     }
 
     next()
