@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ProductManagerMONGO as ProductManager } from "../dao/ProductManagerMONGO.js";
 import { ChatManager as ChatManager } from "../dao/ChatManager.js";
-import {CartManagerMONGO as CartManager} from "../dao/CartManagerMONGO.js";
+import { CartManagerMONGO as CartManager } from "../dao/CartManagerMONGO.js";
 import { auth } from '../middlewares/auth.js';
 
 export const router = Router();
@@ -18,7 +18,13 @@ router.get('/', (req, res) => {
 })
 
 //ROUTE PAGE LISTADO DE PRODUCTOS
-router.get('/products', async (req, res) => {
+router.get('/products', auth ,async (req, res) => {
+    //hardcodeo un id de carrito para trabajar como sesion 
+    //let cartId = "6642ac698fd098eab5b02816" 
+
+    let cartId = {
+        _id: req.session.user.cart._id
+    }
     
     let {page, limit, sort, query} = req.query;
 
@@ -54,9 +60,6 @@ router.get('/products', async (req, res) => {
         sort: sort,
     }
 
-    //hardcodeo un id de carrito para trabajar como sesion 
-    let cartId = "6642ac698fd098eab5b02816"  
-
     let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(query, options);
 
     //armado de links para paginacion
@@ -84,12 +87,14 @@ router.get('/products', async (req, res) => {
     }
 
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink, cartId} );
+    res.status(200).render('products', { products, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink, cartId, login: req.session.user} );
 })
 
 //ROUTE PAGE LISTADO DE CARRITOS COMPLETOS
-router.get('/carts', async (req, res) => {
+router.get('/carts', auth,async (req, res) => {
     let {page, limit} = req.query;
+
+    let userRol = req.session.user.rol.toString();
 
     page = parseInt(page);
     limit = parseInt(limit)
@@ -130,13 +135,23 @@ router.get('/carts', async (req, res) => {
         hasNextLink = `/products?limit=${limit}&page=${totalPages}`
     }
 
-    res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('carts', { carts, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink} );
+    if(userRol === "admin"){
+        res.setHeader('Content-Type', 'text/html');
+        res.status(200).render('carts', { carts, totalPages, hasPrevPage, hasNextPage, page, prevLink, nextLink, hasPrevLink, hasNextLink, login: req.session.user} );
+    } else {
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(500).json(
+            {
+                error: `Acceso denegado. Solo Administradores! `,
+            }
+        )
+    }
+
 })
 
 
 //ROUTE DE UN CARRITO EN PARTICULAR
-router.get('/carts/:cartId', async (req, res) => {
+router.get('/carts/:cartId',auth , async (req, res) => {
 
     let cartId = req.params.cartId
 
@@ -150,7 +165,7 @@ router.get('/carts/:cartId', async (req, res) => {
 
 
     res.setHeader('Content-Type', 'text/html');
-    res.status(200).render('cart', {cart, totalCart})
+    res.status(200).render('cart', {cart, totalCart, login: req.session.user})
 })
 
 //VISTAS DE LAS SESIONES DE USUARIO

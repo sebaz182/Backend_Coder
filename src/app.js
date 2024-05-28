@@ -3,6 +3,8 @@ import { Server } from 'socket.io';
 import { engine } from 'express-handlebars';
 import cookieParser from 'cookie-parser';
 import sessions from "express-session"
+import { initPassport } from './config/passport.config.js';
+import passport from 'passport';
 
 import { router as productsRouter } from './routers/productsRouter.js'
 import { router as cartsRouter } from './routers/cartsRouter.js';
@@ -44,6 +46,9 @@ app.use(sessions({
         saveUninitialized: true, 
         // store:
         }))
+initPassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', viewsRouter);
 app.use('/api/products', productsRouter);

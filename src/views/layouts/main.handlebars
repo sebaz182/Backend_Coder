@@ -60,12 +60,13 @@
                                 <a class="nav-link"
                                     href="/products">Productos</a>
                             </li>
-
+                            {{#if login}}
                             <li class="nav-item">
                                 <a class="nav-link"
-                                    href="/carts">Carts</a>
+                                    href="/carts/{{login.cart._id}}">Cart</a>
                             </li>
-
+                            {{/if}}
+                            
                             {{!-- <li class="nav-item">
                                 <a class="nav-link"
                                     href="/realtimeproducts">RealTime</a>
