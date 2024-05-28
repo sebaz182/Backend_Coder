@@ -88,7 +88,6 @@ export const initPassport=()=>{
             },
             async (ta, tr, profile, done)=>{
                 try {
-                    console.log(profile)
                     let email=profile._json.email
                     let name =profile._json.name
                     if(!email){

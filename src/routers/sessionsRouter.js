@@ -34,10 +34,7 @@ router.post("/login", passport.authenticate("login", {failureRedirect:"/api/sess
 router.get("/github", passport.authenticate("github", {}), (req, res)=>{})
 
 router.get("/callbackGithub", passport.authenticate("github", {failureRedirect:"/api/sessions/error"}), (req, res)=>{
-
-    console.log("QUERY PARAMS:",req.query)
     req.session.user = req.user
-    console.log(req.user)
 
     res.setHeader('Content-Type','application/json');
     return res.status(200).json({payload:"Login exitoso...!!!", user :req.user});
@@ -58,10 +55,7 @@ router.get("/logout", (req, res)=>{
             
         }
     })
-
-    res.redirect("/")
-    //res.setHeader('Content-Type','application/json');
-    //return res.status(200).json({payload:"Logout Exitoso...!!!"});
-
+    res.setHeader('Content-Type','application/json');
+    return res.status(200).json({payload:"Logout Exitoso...!!!"});
 })
 

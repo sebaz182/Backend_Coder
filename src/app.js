@@ -44,7 +44,7 @@ app.set('views', path.join(__dirname, '/views'));
 app.use(sessions({
         secret: "CoderCoder123", resave:true, 
         saveUninitialized: true, 
-        // store:
+        //store:
         }))
 initPassport()
 app.use(passport.initialize())
@@ -99,7 +99,6 @@ io.on('connection', async (socket) => {
                 let newMessage = ({ socketId: socket.id, user: user, message: message });
                 try {
                         await chatManager.addMessage(newMessage);
-                        // mensajes.push({ user, message })
                         io.emit("nuevoMensaje", user, message)
 
                 }
