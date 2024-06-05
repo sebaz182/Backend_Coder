@@ -1,8 +1,15 @@
-<h2>Usuario {{user.name}}</h2>
-<hr>
-<h3>Datos usuario:</h3>
-<p>Nombre: <strong>{{user.name}}</strong></p>
-<p>Correo electrónico: <strong>{{user.email}}</strong></p>
-<br>
-<a href="/products">Comprar</a>
-<br><br>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <h2 class="text-center">Bienvenido {{user.first_name}}!!!</h2>
+        <hr>
+        <p><span class="fw-bold">Nombre:</span> {{user.first_name}}</p>
+        <p><span class="fw-bold">Apellido:</span> {{user.last_name}}</p>
+        <p><span class="fw-bold">Edad:</span> {{user.age}}</p>
+        <p><span class="fw-bold">Correo electrónico:</span> {{user.email}}</p>
+        <br>
+        <div class="text-center">
+            <a href="/products" class="btn btn-primary">Comprar</a>
+        </div>
+        <br>
+    </div>
+</div>

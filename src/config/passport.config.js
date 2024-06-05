@@ -21,8 +21,8 @@ export const initPassport=()=>{
             },
             async(req, username, password, done)=>{
                 try {
-                    let {name, web} = req.body
-                    if(!name){
+                    let {first_name, last_name, age, web} = req.body
+                    if(!first_name || !last_name || !age){
                         return done(null, false)
                     }
 
@@ -38,8 +38,9 @@ export const initPassport=()=>{
                     let newCart = await cartManager.createCart()
                     password = generateHash(password)
 
-                    let user = await userManager.addUser({name, email:username, password, cart:newCart._id, rol:"user"})
+                    let user = await userManager.addUser({first_name, last_name, age, email:username, password, cart:newCart._id, rol:"user"})
 
+                    console.log(user)
                     return done(null, user)
                 } catch (error) {
                     return done(error)

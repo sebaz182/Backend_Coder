@@ -1,16 +1,35 @@
-<h2>Registro</h2>
-<hr>
-<form action="/api/sessions/registre" method="post">
-    {{#if error}}
-        <div style="font-weight: bolder; color: red;">{{error}}</div>
-    {{/if}}
-
-    <input type="text" name="name" placeholder="name">
-    <input type="email" name="email" placeholder="correo electrónico">
-    <input type="password" name="password" placeholder="contraseña">
-    <input type="text" name="web" value="web" hidden>
-
-    <br><br>
-    <input type="submit" value="Registrar">
-</form>
-<br><br>
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-6">
+        <h2 class="text-center">Registro</h2>
+        <hr>
+        <form action="/api/sessions/registre" method="post">
+            {{#if error}}
+                <div class="alert alert-danger fw-bold">{{error}}</div>
+            {{/if}}
+            <div class="mb-3">
+                <label for="first_name" class="form-label fw-bold">Nombre</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="Nombre">
+            </div>
+            <div class="mb-3">
+                <label for="last_name" class="form-label fw-bold">Apellido</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Apellido">
+            </div>
+            <div class="mb-3">
+                <label for="age" class="form-label fw-bold">Edad</label>
+                <input type="number" class="form-control" id="age" name="age" placeholder="Edad" maxlength="99">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label fw-bold">Correo Electrónico</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Correo Electrónico">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label fw-bold">Contraseña</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña">
+            </div>
+            <input type="hidden" name="web" value="web">
+            <div class="text-center">
+                <input type="submit" class="btn btn-primary" value="Registrar">
+            </div>
+        </form>
+    </div>
+</div>
