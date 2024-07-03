@@ -1,6 +1,6 @@
-import {messageModel} from './models/messageModel.js'
+import {messageModel} from '../models/messageModel.js'
 
-export class ChatManager {
+export class ChatDAO {
     
     async getMessages() {
         return await messageModel.find().lean();
@@ -21,4 +21,4 @@ export class ChatManager {
 
 }
 
-export default ChatManager
+export default ChatDAO

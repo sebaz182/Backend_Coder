@@ -1,7 +1,7 @@
 import { query } from 'express';
-import {productModel} from './models/productsModel.js'
+import {productModel} from '../models/productsModel.js'
 
-export class ProductManagerMONGO {
+export class ProductMongoDAO {
     
     //traer todos los productos
     async getProducts() {
@@ -95,4 +95,4 @@ export class ProductManagerMONGO {
     }
 }
 
-export default ProductManagerMONGO
+export default ProductMongoDAO

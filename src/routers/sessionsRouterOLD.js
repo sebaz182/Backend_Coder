@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { UserManagerMONGO as UserManager } from '../dao/UserManagerMONGO.js'
+import { UserMongoDAO as UserManager } from '../DAO/UserMongoDAO.js'
 import { generateHash } from '../utils.js'
-import { CartManagerMONGO as CartManager } from '../dao/CartManagerMONGO.js';
+import { CartMongoDAO as CartManager } from '../DAO/CartMongoDAO.js';
 
 export const router = Router()
 

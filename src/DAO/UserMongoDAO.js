@@ -1,6 +1,6 @@
-import {userModel} from './models/usersModel.js'
+import {userModel} from '../models/usersModel.js'
 
-export class UserManagerMONGO {
+export class UserMongoDAO {
 
     //Add User
     async addUser(user){
@@ -48,4 +48,4 @@ export class UserManagerMONGO {
     }
 }
 
-export default UserManagerMONGO
+export default UserMongoDAO

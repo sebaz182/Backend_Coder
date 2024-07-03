@@ -1,10 +1,10 @@
 import fs from 'fs'
-import {ProductManagerMONGO as ProductManager} from './ProductManagerMONGO.js'
+import {ProductMongoDAO as ProductManager} from '/ProductMongoDAO.js'
 
 const productManager = new ProductManager();
 
 
-export class CartManagerMEMORY {
+export class CartMemoryDAO {
     #carts;
     #path;
 
@@ -88,4 +88,4 @@ export class CartManagerMEMORY {
     }
 }
 
-export default CartManagerMEMORY
+export default CartMemoryDAO

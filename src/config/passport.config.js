@@ -1,8 +1,8 @@
 import passport from "passport";
 import local from "passport-local";
 import github from "passport-github2";
-import { UserManagerMONGO as UserManager } from '../dao/UserManagerMONGO.js'
-import { CartManagerMONGO as CartManager } from '../dao/CartManagerMONGO.js';
+import { UserMongoDAO as UserManager } from '../DAO/UserMongoDAO.js'
+import { CartMongoDAO as CartManager } from '../DAO/CartMongoDAO.js';
 import { generateHash, validatePassword } from "../utils.js";
 
 

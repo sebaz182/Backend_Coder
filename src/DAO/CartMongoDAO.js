@@ -1,6 +1,6 @@
-import {cartModel} from './models/cartsModel.js'
+import {cartModel} from '../models/cartsModel.js'
 
-export class CartManagerMONGO{
+export class CartMongoDAO{
 
     //crear Carrito
     async createCart(cart){
@@ -86,4 +86,4 @@ export class CartManagerMONGO{
 
 }
 
-export default CartManagerMONGO
+export default CartMongoDAO

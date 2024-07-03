@@ -17,8 +17,8 @@ import path from 'path'
 //conexion a la base de datos
 import { conecctionDB } from './database/config.js';
 
-import { ProductManagerMONGO as ProductManager } from './dao/ProductManagerMONGO.js';
-import ChatManager from './dao/ChatManager.js';
+import { ProductMongoDAO as ProductManager } from './DAO/ProductMongoDAO.js';
+import {ChatDAO as ChatManager} from './DAO/ChatDAO.js';
 
 //IMPORTACION DE MIDDLEWARES
 import { middleware01, middleware02 } from "./middlewares/generals.js";
