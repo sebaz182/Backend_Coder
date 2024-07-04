@@ -1,14 +1,9 @@
 import { Router } from 'express';
-import { UserMongoDAO as UserManager } from '../DAO/UserMongoDAO.js'
-import { CartMongoDAO as CartManager } from '../DAO/CartMongoDAO.js';
 import { SessionsController } from '../controllers/SessionsController.js';
 import { generateHash } from '../utils.js'
 import passport from 'passport';
 
 export const router = Router()
-
-const userManager = new UserManager()
-const cartManager = new CartManager()
 
 router.get("/error", SessionsController.error )
 

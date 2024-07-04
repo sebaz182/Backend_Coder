@@ -1,27 +1,11 @@
-import { query } from 'express';
-import {productModel} from '../models/productsModel.js'
+import {cartModel} from '../models/cartsModel.js'
 
-export class ProductMongoDAO {
-    
-    //traer todos los productos
-    async getProducts() {
-        try {
-            return await productModel.find().lean();
-        } catch (error) {
-            console.log(error)
-            res.setHeader('Content-Type','application/json');
-            return res.status(500).json(
-                {
-                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
-                }
-            )
-        }   
-    }
+export class CartsMongoDAO{
 
-    //traer productos paginados
-    async getProductsPagin(query, options){
+    //crear Carrito
+    async createCart(cart){
         try {
-            return await productModel.paginate(query, options)
+            return await cartModel.create(cart)
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -33,10 +17,10 @@ export class ProductMongoDAO {
         } 
     }
 
-    //traer producto por id
-    async getProductById(id){
+    //recupero Cart por Id del carrito
+    async getCartById(id){
         try {
-            return await productModel.findById(id).lean();
+            return await cartModel.findById(id).populate('products.product').lean();
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -45,29 +29,13 @@ export class ProductMongoDAO {
                     error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
                 }
             )
-        } 
-    }
-
-
-    //añadir un producto
-    async addProduct(product) {
-        try {
-            return await productModel.create(product);
-        } catch (error) {
-            console.log(error)
-            res.setHeader('Content-Type','application/json');
-            return res.status(500).json(
-                {
-                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
-                }
-            )
-        } 
+        }
     }
     
-    //eliminar un producto
-    async deleteProduct(filter={}){
+    //recupero todo los Carritos
+    async getCarts(){
         try {
-            return await productModel.findByIdAndDelete(filter);
+            return await cartModel.find();
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -76,13 +44,13 @@ export class ProductMongoDAO {
                     error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
                 }
             )
-        } 
+        }
     }
 
-    //actualizar un producto
-    async updateProduct(id, product){
+    //recupero todo los Carritos
+    async getCartsPagin(options){
         try {
-            return await productModel.findByIdAndUpdate(id, product, {runValidators:true, returnDocument:"after"} );
+            return await cartModel.paginate({}, options);
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type','application/json');
@@ -91,8 +59,31 @@ export class ProductMongoDAO {
                     error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
                 }
             )
-        } 
+        }
     }
+    
+    //CON EL UPDATE PUEDO HACER TODAS LAS ACCIONES - LA LOGICA LA HAGO DESDE EL ROUTER
+    //Agregar producto existente al carrito existente 
+    //Descontar del carrito el producto seleccionado
+    //Eliminar todos los productos del carrito
+    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
+    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+    //Actualizar el carrito con un arreglo de productos con el formato especificado arriba
+    //Actualizar solo la cantidad de ejemplares del producto por cualquier cantidad pasada desde req.body
+    async updateCart(cartId, cart){
+        try {
+            return await cartModel.findByIdAndUpdate(cartId, cart, {runValidators:true, returnDocument:"after"} );
+        } catch (error) {
+            console.log(error)
+            res.setHeader('Content-Type','application/json');
+            return res.status(500).json(
+                {
+                    error:`Error inesperado en el servidor - Intente más tarde, o contacte a su administrador`,
+                }
+            )
+        }
+    }
+
 }
 
-export default ProductMongoDAO
+export default CartsMongoDAO

@@ -1,6 +1,6 @@
 import {userModel} from '../models/usersModel.js'
 
-export class UserMongoDAO {
+export class UsersMongoDAO {
 
     //Add User
     async addUser(user){
@@ -48,4 +48,4 @@ export class UserMongoDAO {
     }
 }
 
-export default UserMongoDAO
+export default UsersMongoDAO

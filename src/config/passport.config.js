@@ -1,13 +1,10 @@
 import passport from "passport";
 import local from "passport-local";
 import github from "passport-github2";
-import { UserMongoDAO as UserManager } from '../DAO/UserMongoDAO.js'
-import { CartMongoDAO as CartManager } from '../DAO/CartMongoDAO.js';
 import { generateHash, validatePassword } from "../utils.js";
+import { usersService } from "../services/UsersService.js";
+import { cartsService } from "../services/Cartsservice.js";
 
-
-const userManager = new UserManager();
-const cartManager = new CartManager();
 
 export const initPassport=()=>{
 
@@ -26,7 +23,7 @@ export const initPassport=()=>{
                         return done(null, false)
                     }
 
-                    let existe = await userManager.getBy({email: username})
+                    let existe = await usersService.getBy({email: username})
                     if(existe){
                         return done(null, false)
                     }
@@ -35,10 +32,10 @@ export const initPassport=()=>{
 
                     // hacer resto de validaciones
 
-                    let newCart = await cartManager.createCart()
+                    let newCart = await cartsService.createCart()
                     password = generateHash(password)
 
-                    let user = await userManager.addUser({first_name, last_name, age, email:username, password, cart:newCart._id, rol:"user"})
+                    let user = await usersService.addUser({first_name, last_name, age, email:username, password, cart:newCart._id, rol:"user"})
 
                     console.log(user)
                     return done(null, user)
@@ -58,7 +55,7 @@ export const initPassport=()=>{
             },
             async(username, password, done)=>{
                 try {
-                    let user = await userManager.getByPopu({email:username})
+                    let user = await usersService.getByPopu({email:username})
                     if(!user){
                         return done(error)
                     }
@@ -94,15 +91,15 @@ export const initPassport=()=>{
                     if(!email){
                         return done(null, false)
                     }
-                    let user = await userManager.getByPopu({email})
+                    let user = await usersService.getByPopu({email})
                     if(!user){
                         let newCart = await cartManager.createCart()
-                        user = await userManager.addUser(
+                        user = await usersService.addUser(
                             {
                                 name, email, profile, cart: newCart._id
                             }
                         )
-                        user =await userManager.getByPopu({email})
+                        user =await usersService.getByPopu({email})
                     }
                 return done(null, user)
                 } catch (error) {
@@ -117,7 +114,7 @@ export const initPassport=()=>{
     })
 
     passport.deserializeUser(async(id, done)=>{
-        let user = await userManager.getBy({_id:id})
+        let user = await usersService.getBy({_id:id})
         return done(null, user)
     })
 }

@@ -1,6 +1,6 @@
 import fs from 'fs'
 
-export class ProductMemoryDAO {
+export class ProductsMemoryDAO {
     #products;
     #path;
 
@@ -109,4 +109,4 @@ export class ProductMemoryDAO {
     }
 }
 
-export default ProductMemoryDAO
+export default ProductsMemoryDAO

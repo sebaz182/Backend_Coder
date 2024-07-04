@@ -4,7 +4,7 @@ import {ProductMongoDAO as ProductManager} from '/ProductMongoDAO.js'
 const productManager = new ProductManager();
 
 
-export class CartMemoryDAO {
+export class CartsMemoryDAO {
     #carts;
     #path;
 
@@ -88,4 +88,4 @@ export class CartMemoryDAO {
     }
 }
 
-export default CartMemoryDAO
+export default CartsMemoryDAO

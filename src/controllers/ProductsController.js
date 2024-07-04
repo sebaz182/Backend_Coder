@@ -1,14 +1,14 @@
-import { ProductMongoDAO as ProductManager } from '../DAO/ProductMongoDAO.js';
+// import { ProductsMongoDAO as ProductsDAO } from '../DAO/ProductsMongoDAO.js';
 import mongoose from 'mongoose';
-
-const productManager = new ProductManager()
+import { productsService } from '../services/ProductsService.js';
 
 export class ProductsController{
 
     static getProducts = async (req, res) => {
 
         try {
-            let products = await productManager.getProducts();
+            // let products = await ProductsDAO.getProducts();
+            let products = await productsService.getProducts();
             res.setHeader('Content-Type', 'application/json');
             return res.status(200).json({ products });
         } catch (error) {
@@ -30,7 +30,8 @@ export class ProductsController{
     
         if (validId) {
             try {
-                let product = await productManager.getProductById(productId);
+                // let product = await ProductsDAO.getProductById(productId);
+                let product = await productsService.getProductById(productId);
     
                 if (product) {
                     res.setHeader('Content-Type', 'application/json');
@@ -67,7 +68,7 @@ export class ProductsController{
         let existCode
     
         try {
-            existCode = await productManager.getProductBy({ code })
+            existCode = await ProductsDAO.getProductBy({ code })
         }
         catch (error) {
             res.setHeader('Content-Type', 'application/json');
@@ -83,7 +84,8 @@ export class ProductsController{
             return res.status(400).json({ error: `Ya existe el Producto con Codigo ${code}!!!` })
         } else {
             try {
-                let product = await productManager.addProduct({ ...req.body })
+                // let product = await ProductsDAO.addProduct({ ...req.body })
+                let product = await productsService.addProduct({...req.body })
                 io.emit('updateProduct', product);
                 return res.status(500).json({ product });
     
@@ -117,7 +119,8 @@ export class ProductsController{
             let existCode
             let code = aModProduct.code
             try {
-                existCode = await productManager.getProductBy({ code })
+                // existCode = await ProductsDAO.getProductBy({ code })
+                existe = await productsService.getProductBy({ code })
             }
             catch (error) {
                 res.setHeader('Content-Type', 'application/json');
@@ -131,7 +134,8 @@ export class ProductsController{
             //traigo el producto a modificar para comparar el codigo con el enviado
             let product
             try {
-                product = await productManager.getProductById(productId)
+                // product = await ProductsDAO.getProductById(productId)
+                product = await productsService.getProductBy(productId)
             }
             catch (error) {
                 res.setHeader('Content-Type', 'application/json');
@@ -145,7 +149,8 @@ export class ProductsController{
             if (product) {
                 if (!existCode || product.code === aModProduct.code) {
                     try {
-                        let productModif = await productManager.updateProduct(productId, aModProduct)
+                        // let productModif = await ProductsDAO.updateProduct(productId, aModProduct)
+                        let productModif = await productsService.updateProduct(productId, aModProduct)
                         res.setHeader('Content-Type', 'application/json');
                         return res.status(200).json({ ProductoModificado: productModif });
     
@@ -181,7 +186,8 @@ export class ProductsController{
     
         if (validId) {
             try {
-                let product = await productManager.deleteProduct({ _id: productId });
+                // let product = await ProductsDAO.deleteProduct({ _id: productId });
+                let product = await productsService.deleteProduct({ _id: productId });
                 if (product) {
                     res.setHeader('Content-Type', 'application/json');
                     io.emit('updateProduct', product);

@@ -1,11 +1,10 @@
-import { ProductMongoDAO as ProductManager } from "../DAO/ProductMongoDAO.js";
-import { ChatDAO as ChatManager } from "../DAO/ChatDAO.js";
-import { CartMongoDAO as CartManager } from "../DAO/CartMongoDAO.js";
+// import { ProductsMongoDAO as ProductsDAO } from "../DAO/ProductsMongoDAO.js";
+// import { ChatsMongoDAO as ChatsDAO } from "../DAO/ChatsMongoDAO.js";
+// import { CartsMongoDAO as CartsDAO } from "../DAO/CartsMongoDAO.js";
 
-const productManager = new ProductManager();
-const cartManager = new CartManager();
-
-const chatManager = new ChatManager();
+import { cartsService } from "../services/CartsService.js";
+import { productsService } from "../services/ProductsService.js";
+import { chatsService } from "../services/ChatsService.js"
 
 export class ViewsController {
 
@@ -55,8 +54,9 @@ export class ViewsController {
             sort: sort,
         }
     
-        let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productManager.getProductsPagin(query, options);
-    
+        // let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await ProductsDAO.getProductsPagin(query, options);
+        let { docs: products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productsService.getProductsPagin(query, options);
+
         //armado de links para paginacion
         let prevLink, nextLink, hasPrevLink, hasNextLink
     
@@ -105,7 +105,8 @@ export class ViewsController {
             limit: limit,
         }
     
-        let { docs: carts, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await cartManager.getCartsPagin(options);
+        //let { docs: carts, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await CartsDAO.getCartsPagin(options);
+        let { docs: carts, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await cartsService.getCartsPagin(options);
     
         //armado de links para paginacion
         let prevLink, nextLink, hasPrevLink, hasNextLink
@@ -146,7 +147,8 @@ export class ViewsController {
 
         let cartId = req.params.cartId
     
-        let cart = await cartManager.getCartById(cartId)
+        //let cart = await CartsDAO.getCartById(cartId)
+        let cart = await cartsService.getCartById(cartId)
     
         let totalCart = 0
     
@@ -199,7 +201,8 @@ export class ViewsController {
         let products
     
         try {
-            products = await productManager.getProducts();
+            //products = await ProductsDAO.getProducts();
+            products = await productsService.getProducts();
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type', 'application/json');
@@ -218,7 +221,8 @@ export class ViewsController {
         let messages
     
         try {
-            messages = await chatManager.getMessages();
+            //messages = await ChatsDAO.getMessages();
+            messages = await chatsService.getMessages();
         } catch (error) {
             console.log(error)
             res.setHeader('Content-Type', 'application/json');

@@ -17,8 +17,10 @@ import path from 'path'
 //conexion a la base de datos
 import { conecctionDB } from './database/config.js';
 
-import { ProductMongoDAO as ProductManager } from './DAO/ProductMongoDAO.js';
-import {ChatDAO as ChatManager} from './DAO/ChatDAO.js';
+// import { ProductsMongoDAO as ProductManager } from './DAO/ProductsMongoDAO.js';
+// import {ChatsDAO as ChatManager} from './DAO/ChatsDAO.js';
+import { productsService } from './services/ProductsService.js';
+import { chatsService } from './services/ChatsService.js';
 
 //IMPORTACION DE MIDDLEWARES
 import { middleware01, middleware02 } from "./middlewares/generals.js";
@@ -28,9 +30,6 @@ import { log } from 'console';
 const PORT = 3000
 
 const app = express()
-
-const productManager = new ProductManager();
-const chatManager = new ChatManager();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -64,11 +63,11 @@ export const io = new Server(expressServer)
 
 io.on('connection', async (socket) => {
 
-        const products = await productManager.getProducts();
+        const products = await productsService.getProducts();
         socket.emit('products', products)
 
         socket.on('addProduct', async (product) => {
-                let newProduct = await productManager.addProduct({ ...product });
+                let newProduct = await productsService.addProduct({ ...product });
                 if (newProduct) {
                         products.push(newProduct);
                         socket.emit('products', products)
@@ -81,7 +80,7 @@ io.on('connection', async (socket) => {
         
         let usuarios =[]
 
-        let messages = await chatManager.getMessages();
+        let messages = await chatsService.getMessages();
         messages = messages.map(m=> {
                 return {user: m.user, message: m.message}
         })

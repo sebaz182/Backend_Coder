@@ -5,7 +5,7 @@ export class SessionsController {
 
     static error = (req,res)=>{
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).json({ error: `Error en la operacion` })    
+        return res.status(500).json({ error: `Error en la operacion!!` })    
     }
 
     static registre = (req, res)=>{

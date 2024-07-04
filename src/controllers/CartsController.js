@@ -1,19 +1,21 @@
 import mongoose from 'mongoose';
-import { CartMongoDAO as CartManager } from '../DAO/CartMongoDAO.js';
-import { ProductMongoDAO as ProductManager } from '../DAO/ProductMongoDAO.js';
+// import { CartsMongoDAO as CartsDAO } from '../DAO/CartsMongoDAO.js';
+// import { ProductsMongoDAO as ProductsDAO } from '../DAO/ProductsMongoDAO.js';
 
-const cartManager = new CartManager()
-const productManager = new ProductManager()
+import { cartsService } from "../services/Cartsservice.js";
+import { productsService } from "../services/ProductsService.js";
 
 export class CartsController{
 
     static creteCart = async (req, res) => {
-        let newCart = await cartManager.createCart({})
+        // let newCart = await CartsDAO.createCart({})
+        let newCart = await cartsService.createCart({})
         return res.status(500).json({ newCart });
     }
 
     static getCarts = async (req, res) => {
-        let carts = await cartManager.getCarts();
+        // let carts = await CartsDAO.getCarts();
+        let carts = await cartsService.getCarts();
         res.setHeader('Content-Type', 'application/json');
         return res.status(200).json({ carts });
     }
@@ -25,7 +27,8 @@ export class CartsController{
     
         if (validId) {
             try {
-                let cart = await cartManager.getCartById(cartId);
+                // let cart = await CartsDAO.getCartById(cartId);
+                let cart = await cartsService.getCatById(cartId);
     
                 if (cart) {
                     res.setHeader('Content-Type', 'application/json');
@@ -63,7 +66,8 @@ export class CartsController{
         //verifico que el id del carrito sea valido
         if (validCardId) {
             try {
-                cart = await cartManager.getCartById(cartId);
+                // cart = await CartsDAO.getCartById(cartId);
+                cart = await cartsService.getCartById(cartId);
                 if (!cart) {
                     res.setHeader('Content-Type', 'application/json');
                     return res.status(404).json({ msj: `Cart no encontrado` });
@@ -82,8 +86,8 @@ export class CartsController{
             //verifico que el id de producto sea valisdo
             if (validProddId) {
                 try {
-                    product = await productManager.getProductById(productId);
-    
+                    // product = await ProductsDAO.getProductById(productId);
+                    product = await productsService.getProductById(productId);
                     if (!product) {
                         res.setHeader('Content-Type', 'application/json');
                         return res.status(404).json({ msj: `Producto no encontrado` });
@@ -99,7 +103,8 @@ export class CartsController{
                     }
     
                     try {
-                        let cartUpdate = await cartManager.updateCart(cartId, cart)
+                        // let cartUpdate = await CartsDAO.updateCart(cartId, cart)
+                        let cartUpdate = await cartsService.updateCart(cartId, cart);
                         res.setHeader('Content-Type', 'application/json');
                         return res.status(200).json({ Carrito : cartUpdate });
                     
@@ -147,7 +152,7 @@ export class CartsController{
         //verifico que el id del carrito sea valido
         if (validCardId) {
     
-            cart = await cartManager.getCartById(cartId);
+            cart = await CartsDAO.getCartById(cartId);
             if (!cart) {
                 res.setHeader('Content-Type', 'application/json');
                 return res.status(404).json({ msj: `Cart no encontrado` });
@@ -155,8 +160,9 @@ export class CartsController{
     
             //verifico que el id de producto sea valisdo
             if (validProddId) {
-                product = await productManager.getProductById(productId);
-    
+                // product = await ProductsDAO.getProductById(productId);
+                product = await productsService.getProductById(productId);
+
                     if (!product) {
                         res.setHeader('Content-Type', 'application/json');
                         return res.status(404).json({ msj: `Producto no encontrado` });
@@ -175,7 +181,8 @@ export class CartsController{
                         }
                     }
     
-                    let cartUpdate = await cartManager.updateCart(cartId, cart)
+                    // let cartUpdate = await CartsDAO.updateCart(cartId, cart)
+                    let cartUpdate = await cartsService.updateCart(cartId, cart);
                     res.setHeader('Content-Type', 'application/json');
                     return res.status(200).json({ 
                         msj: 'Producto eliminado del carrito - Carrito Actualizado! ',
@@ -202,7 +209,8 @@ export class CartsController{
     
         //verifico que el id del carrito sea valido
         if (validCartId){
-            cart = await cartManager.getCartById(cartId);
+            // cart = await CartsDAO.getCartById(cartId);
+            cart = await cartsService.getCartById(cartId);
             if (!cart) {
                 res.setHeader('Content-Type', 'application/json');
                 return res.status(404).json({ msj: `Cart no encontrado` });
@@ -210,7 +218,8 @@ export class CartsController{
     
             cart.products = [];
     
-            await cartManager.updateCart(cartId, cart)
+            // await CartsDAO.updateCart(cartId, cart)
+            await cartsService.updateCart(cartId, cart);
             res.setHeader('Content-Type', 'application/json');
             return res.status(200).json({ 
                 msj: `Productos eliminados del carrito ${cartId}`,
@@ -231,15 +240,17 @@ export class CartsController{
     
         //verifico que el id del carrito sea valido
         if (validCardId) {
-            let cart = await cartManager.getCartById(cartId);
+            // let cart = await CartsDAO.getCartById(cartId);
+            let cart = await cartsService.getCartById(cartId);
             if (!cart) {
                 res.setHeader('Content-Type', 'application/json');
                 return res.status(404).json({ msj: `Cart no encontrado` });
             } else{
                 cart.products.push(productsBody);
     
-                let cartUpdate = await cartManager.updateCart(cartId, cart)
-    
+                // let cartUpdate = await CartsDAO.updateCart(cartId, cart)
+                let cartUpdate = await cartsService.updateCart(cartId, cart);
+
                 res.setHeader('Content-Type', 'application/json');
                 return res.status(200).json({ 
                     msj: 'Carrito Actualizado! ',
@@ -266,7 +277,8 @@ export class CartsController{
         //verifico que el id del carrito sea valido
         if (validCardId) {
             try {
-                cart = await cartManager.getCartById(cartId);
+                // cart = await CartsDAO.getCartById(cartId);
+                cart = await cartsService.getCartById(cartId);
                 if (!cart) {
                     res.setHeader('Content-Type', 'application/json');
                     return res.status(404).json({ msj: `Cart no encontrado` });
@@ -285,8 +297,9 @@ export class CartsController{
             //verifico que el id de producto sea valisdo
             if (validProddId) {
                 
-                    product = await productManager.getProductById(productId);
-    
+                    // product = await ProductsDAO.getProductById(productId);
+                    product = await productsService.getProductById(productId);
+
                     if (!product) {
                         res.setHeader('Content-Type', 'application/json');
                         return res.status(404).json({ msj: `Producto no encontrado` });
@@ -303,7 +316,8 @@ export class CartsController{
                         } else{
                             cart.products.splice(indexProductInCart,1);
                         }
-                        let cartUpdate = await cartManager.updateCart(cartId, cart)
+                        // let cartUpdate = await CartsDAO.updateCart(cartId, cart)
+                        let cartUpdate = await cartsService.updateCart(cartId, cart)
                         res.setHeader('Content-Type', 'application/json');
                         return res.status(200).json({ Carrito : cartUpdate });
                     } else{
